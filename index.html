@@ -168,6 +168,26 @@ footer {
     to { transform: scale(1); opacity: 1; }
 }
 
+/* Сердечки при открытии фото */
+.modal-heart {
+    position: fixed;
+    font-size: 25px;
+    pointer-events: none;
+    animation: modalFloat 1.5s ease forwards;
+    z-index: 1000;
+}
+
+@keyframes modalFloat {
+    0% {
+        transform: scale(0.5) translateY(0);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1.5) translateY(-150px);
+        opacity: 0;
+    }
+}
+
 .close {
     position: absolute;
     top: 20px;
@@ -206,6 +226,24 @@ footer {
 </div>
 
 <script>
+    // Сердечки при открытии фото
+function createModalHearts() {
+    for (let i = 0; i < 15; i++) {
+        const heart = document.createElement("div");
+        heart.classList.add("modal-heart");
+        heart.innerHTML = "💖";
+
+        heart.style.left = (window.innerWidth / 2 + (Math.random() * 200 - 100)) + "px";
+        heart.style.top = (window.innerHeight / 2 + (Math.random() * 100 - 50)) + "px";
+
+        document.body.appendChild(heart);
+
+        setTimeout(() => {
+            heart.remove();
+        }, 1500);
+    }
+}
+
 // Появление фото
 const images = document.querySelectorAll('.reason img');
 const observer = new IntersectionObserver(entries => {
@@ -248,6 +286,7 @@ document.querySelectorAll(".reason img").forEach(img => {
     img.addEventListener("click", function() {
         modal.style.display = "block";
         modalImg.src = this.src;
+        createModalHearts();
     });
 });
 
